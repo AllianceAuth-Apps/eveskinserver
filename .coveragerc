@@ -1,6 +1,6 @@
 [run]
 branch = True
-source = memberaudit
+source = eveskinserver
 
 [report]
 exclude_lines =
@@ -13,5 +13,4 @@ omit =
     setup.py
     */test*.py
     */tests/*.py
-    */migrations/*
     doc/*

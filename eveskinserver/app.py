@@ -1,13 +1,14 @@
 import csv
 import os
 
-from flask import Flask, send_file, request, render_template
+from flask import Flask, send_file, request, render_template, make_response
 
 from PIL import Image
 
 
 app = Flask(__name__)
-root_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+current_path = os.path.dirname(os.path.realpath(__file__))
+root_path = os.path.dirname(current_path)
 
 
 def load_type_2_icon() -> dict:
@@ -48,10 +49,14 @@ def api(type_id):
 
     icon_id = type_2_icon.get(type_id)
     icon_name = str(icon_id) if icon_id else "default"
-    if not os.path.isfile(icon_sized_filename(icon_name, size)):
+    output_filename = icon_sized_filename(icon_name, size)
+    if not os.path.isfile(output_filename):
         generate_sized_icon(icon_name, size)
 
-    return send_file(icon_sized_filename(icon_name, size), mimetype="image/png")
+    response = make_response(send_file(output_filename, mimetype="image/png"))
+    _, filename = os.path.split(output_filename)
+    response.headers["x-suggested-filename"] = filename
+    return response
 
 
 def icon_base_filename(icon_name: str) -> str:
@@ -59,7 +64,7 @@ def icon_base_filename(icon_name: str) -> str:
 
 
 def icon_sized_filename(icon_name: str, size: int) -> str:
-    return f"generated_icons/{icon_name}_{size}.png"
+    return f"{current_path}/generated_icons/{icon_name}_{size}.png"
 
 
 def generate_sized_icon(icon_name: str, size: int):
