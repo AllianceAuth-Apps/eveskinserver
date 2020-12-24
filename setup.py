@@ -18,7 +18,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     license="MIT",
-    description="Endpoint for providing SKIN icon images for Eve Online types.",
+    description="Image server for providing SKIN icons for Eve Online types.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://gitlab.com/ErikKalkoken/eveskinserver",

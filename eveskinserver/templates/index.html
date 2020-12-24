@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Flask Template Example</title>
+    <title>EVE SKIN server</title>
   </head>
   <body>
     <div>
-      <p>Welcome to the Eve Online SKIN icon image server</p>
+      <h2>Welcome</h2>
+      <p>Welcome to the Eve SKIN server! This is a simple image server for providing SKIN icons for Eve Online types.</p>
+      <p>This server is open source. You can find the code on <a href="https://gitlab.com/ErikKalkoken/eveskinserver">GitLab</a>.</p>
+      <h2>Syntax</h2>
+      <ul>
+        <li><code>/skin/{license_type_id}/icon[?size=32|64|128|256|512|1024]</code></li>
+      </ul>
+      <h2>Errors</h2>
+      <ul>
+        <li>HTTP 404 for unknown type IDs</li>
+        <li>Defaults to size = 64 when invalid or no size is given</li>
+      </ul>
+
+      <h2>Examples</h2>
+      <ul>
+        <li><a href="/skin/34599/icon">/skin/34599/icon</a></li>
+        <li><a href="/skin/47290/icon?size=128">/skin/47290/icon?size=128</a></li>
+      </ul>
+      <hr>
+      <p>Copyright 2020 by <a href="https://twitter.com/ErikKalkoken">Erik Kalkoken</a></p>
     </div>
   </body>
 </html>

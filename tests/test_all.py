@@ -31,11 +31,9 @@ class TestEveSkinServer(unittest.TestCase):
         self.assertEqual(result.headers.get("x-suggested-filename"), "244_64.png")
 
     def test_skin_invalid_type(self):
-        """when requesting an invalid SKIN type, return default SKIN icon"""
+        """when requesting an invalid SKIN type, raises 404"""
         result = self.app.get("/skin/34/icon")  # not a SKIN type
-        self.assertEqual(result.status_code, 200)
-        self.assertEqual(result.content_type, "image/png")
-        self.assertEqual(result.headers.get("x-suggested-filename"), "default_64.png")
+        self.assertEqual(result.status_code, 404)
 
     def test_skin_size_32(self):
         """when requesting a SKIN type with size, return correct SKIN icon an size"""

@@ -1,7 +1,7 @@
 import csv
 import os
 
-from flask import Flask, send_file, request, render_template, make_response
+from flask import Flask, send_file, request, render_template, make_response, abort
 
 from PIL import Image
 
@@ -48,7 +48,10 @@ def api(type_id):
         size = 64
 
     icon_id = type_2_icon.get(type_id)
-    icon_name = str(icon_id) if icon_id else "default"
+    if not icon_id:
+        abort(404)
+
+    icon_name = str(icon_id)
     output_filename = icon_sized_filename(icon_name, size)
     if not os.path.isfile(output_filename):
         generate_sized_icon(icon_name, size)
