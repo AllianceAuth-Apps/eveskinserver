@@ -3,7 +3,7 @@
 Image server for providing SKIN icons for Eve Online types.
 
 [![release](https://img.shields.io/badge/release-0.1.0a1-orange)](https://pypi.org/project/eveskinserver/)
-[![Python](https://img.shields.io/badge/python-3.6-blue)](https://pypi.org/project/eveskinserver/)
+[![Python](https://img.shields.io/badge/python-3.7-blue)](https://pypi.org/project/eveskinserver/)
 [![pipeline](https://gitlab.com/ErikKalkoken/eveskinserver/badges/master/pipeline.svg)](https://gitlab.com/ErikKalkoken/eveskinserver/-/pipelines)
 [![coverage](https://gitlab.com/ErikKalkoken/eveskinserver/badges/master/coverage.svg)](https://gitlab.com/ErikKalkoken/eveskinserver/-/pipelines)
 [![license](https://img.shields.io/badge/license-MIT-green)](https://gitlab.com/ErikKalkoken/eveskinserver/-/blob/master/LICENSE)
