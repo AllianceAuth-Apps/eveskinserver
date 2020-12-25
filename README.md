@@ -14,12 +14,17 @@ Image server for providing SKIN icons for Eve Online types.
 
 This is a simple image server for providing SKIN icons for Eve Online types. This server aims to fill the gap of the official [CCP imagserver](https://imageserver.eveonline.com/), which does not provide images for SKIN icons. The API has been designed to match the API from CCP.
 
-The endpoint can be reached at xx and is free for public consumption.
+## Server
 
-## Legal
+The server can be reached at [https://eveskinserver.kalkoken.net/](https://eveskinserver.kalkoken.net/) and is free for public consumption.
 
-All game related data ("game data", e.g. in folder ccp_data) is owned by CCP hf and used in accordance with the developer licence agreement.
+![Uptime Robot status](https://img.shields.io/uptimerobot/status/m786757006-b1d9c482172ede33260a4762)
+![Uptime 7 day](https://img.shields.io/uptimerobot/ratio/7/m786757006-b1d9c482172ede33260a4762)
 
 ## Donation
 
 But if you'd like to say thanks, a ISK donation is always very welcome: **Erik Kalkoken**
+
+## Legal
+
+All game related data ("game data", e.g. in folder ccp_data) is owned by CCP hf and used in accordance with the developer licence agreement.
