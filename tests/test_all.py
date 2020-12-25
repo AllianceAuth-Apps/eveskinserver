@@ -98,3 +98,8 @@ class TestEveSkinServer(unittest.TestCase):
         self.assertEqual(result.content_type, "image/png")
         self.assertEqual(result.headers.get("x-suggested-filename"), "244_64.png")
         self.assertEqual(mock_generate_sized_icon.call_count, 1)
+
+    def test_favicon_exists(self):
+        result = self.app.get("/favicon.ico")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, "image/png")

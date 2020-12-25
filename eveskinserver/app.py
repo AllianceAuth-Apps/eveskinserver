@@ -3,7 +3,14 @@ import logging
 import os
 import tempfile
 
-from flask import Flask, send_file, request, render_template, make_response, abort
+from flask import (
+    Flask,
+    send_file,
+    request,
+    render_template,
+    make_response,
+    abort,
+)
 from PIL import Image
 
 logger = logging.getLogger(__name__)
@@ -18,7 +25,7 @@ app = Flask(__name__)
 
 current_path = os.path.dirname(os.path.realpath(__file__))
 generated_icons_path = tempfile.mkdtemp()
-logger.debug("Storing generated icons in: %s", generated_icons_path)
+logger.info("Storing generated icons in: %s", generated_icons_path)
 
 
 def load_type_2_icon() -> dict:
@@ -40,6 +47,11 @@ def load_type_2_icon() -> dict:
 
 
 type_to_icon_mapping = load_type_2_icon()
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_file(f"{current_path}/static/icon.png", mimetype="image/png")
 
 
 @app.route("/", methods=["GET"])
