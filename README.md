@@ -16,6 +16,10 @@ This is a simple image server for providing SKIN icons for Eve Online types. Thi
 
 The endpoint can be reached at xx and is free for public consumption.
 
+## Legal
+
+All game related data ("game data", e.g. in folder ccp_data) is owned by CCP hf and used in accordance with the developer licence agreement.
+
 ## Donation
 
-The endpoint is free to use. But if you'd like to say thanks, a ISK donation is always very welcome: **Erik Kalkoken**
+But if you'd like to say thanks, a ISK donation is always very welcome: **Erik Kalkoken**

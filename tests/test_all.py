@@ -1,5 +1,6 @@
 import unittest
-from eveskinserver.app import app
+from unittest import mock
+from eveskinserver.app import app, generate_sized_icon
 
 
 class TestEveSkinServer(unittest.TestCase):
@@ -85,3 +86,15 @@ class TestEveSkinServer(unittest.TestCase):
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.content_type, "image/png")
         self.assertEqual(result.headers.get("x-suggested-filename"), "244_64.png")
+
+    @mock.patch("eveskinserver.app.generate_sized_icon", wraps=generate_sized_icon)
+    def test_generated_icons_are_cached(self, mock_generate_sized_icon):
+        """when accessing the same icon a 2nd time, then do not generate the icon again"""
+
+        result = self.app.get("/skin/47290/icon")
+        result = self.app.get("/skin/47290/icon")
+
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, "image/png")
+        self.assertEqual(result.headers.get("x-suggested-filename"), "244_64.png")
+        self.assertEqual(mock_generate_sized_icon.call_count, 1)

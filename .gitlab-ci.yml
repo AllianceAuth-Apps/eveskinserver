@@ -1,0 +1,25 @@
+stages:
+- pre-commit
+- test
+
+before_script:
+- python -V
+- pip install tox
+
+pre-commit-check:
+  stage: pre-commit
+  image: python:3.6-buster
+  variables:
+    PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+  cache:
+    paths:
+      - ${PRE_COMMIT_HOME}
+  script:
+    - pip install pre-commit
+    - pre-commit run --all-files
+
+tests:
+  stage: test
+  image: python:3.6-buster
+  script:
+  - tox

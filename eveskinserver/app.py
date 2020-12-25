@@ -9,10 +9,7 @@ from PIL import Image
 app = Flask(__name__)
 
 
-data_path = os.environ.get("EVESKINSERVER_DATA_DIR")
-if not data_path:
-    print("ERROR: EVESKINSERVER_DATA_DIR not defined")
-    exit(1)
+root_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 generated_icons_path = tempfile.mkdtemp()
 print(f"Storing generated icons in: {generated_icons_path}")
@@ -22,12 +19,12 @@ def load_type_2_icon() -> dict:
     """returns generated mapping from type ID to icon ID"""
 
     print("Building type to icon ID mappings...")
-    with open(f"{data_path}/sde/skinLicense.csv", mode="r") as csv_file:
+    with open(f"{root_path}/ccp_data/sde/skinLicense.csv", mode="r") as csv_file:
         skin_licenses = list(csv.reader(csv_file, delimiter=","))
 
     type_2_skin = {row[0]: row[2] for row in skin_licenses}
 
-    with open(f"{data_path}/sde/skins.csv", mode="r") as csv_file:
+    with open(f"{root_path}/ccp_data/sde/skins.csv", mode="r") as csv_file:
         skins = list(csv.reader(csv_file, delimiter=","))
 
     skin_2_icon = {row[0]: row[2] for row in skins}
@@ -36,7 +33,7 @@ def load_type_2_icon() -> dict:
     }
 
 
-type_2_icon = load_type_2_icon()
+type_to_icon_mapping = load_type_2_icon()
 
 
 @app.route("/", methods=["GET"])
@@ -54,7 +51,7 @@ def api(type_id):
     if not size or size < 32 or size > 1024 or (size & (size - 1) != 0):
         size = 64
 
-    icon_id = type_2_icon.get(type_id)
+    icon_id = type_to_icon_mapping.get(type_id)
     if not icon_id:
         abort(404)
 
@@ -70,7 +67,7 @@ def api(type_id):
 
 
 def icon_base_filename(icon_name: str) -> str:
-    return f"{data_path}/icons/{icon_name}.png"
+    return f"{root_path}/ccp_data/icons/{icon_name}.png"
 
 
 def icon_sized_filename(icon_name: str, size: int) -> str:
