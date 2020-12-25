@@ -9,7 +9,7 @@ from PIL import Image
 app = Flask(__name__)
 
 
-root_path = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+current_path = os.path.dirname(os.path.realpath(__file__))
 
 generated_icons_path = tempfile.mkdtemp()
 print(f"Storing generated icons in: {generated_icons_path}")
@@ -19,12 +19,12 @@ def load_type_2_icon() -> dict:
     """returns generated mapping from type ID to icon ID"""
 
     print("Building type to icon ID mappings...")
-    with open(f"{root_path}/ccp_data/sde/skinLicense.csv", mode="r") as csv_file:
+    with open(f"{current_path}/ccp_data/sde/skinLicense.csv", mode="r") as csv_file:
         skin_licenses = list(csv.reader(csv_file, delimiter=","))
 
     type_2_skin = {row[0]: row[2] for row in skin_licenses}
 
-    with open(f"{root_path}/ccp_data/sde/skins.csv", mode="r") as csv_file:
+    with open(f"{current_path}/ccp_data/sde/skins.csv", mode="r") as csv_file:
         skins = list(csv.reader(csv_file, delimiter=","))
 
     skin_2_icon = {row[0]: row[2] for row in skins}
@@ -67,7 +67,7 @@ def api(type_id):
 
 
 def icon_base_filename(icon_name: str) -> str:
-    return f"{root_path}/ccp_data/icons/{icon_name}.png"
+    return f"{current_path}/ccp_data/icons/{icon_name}.png"
 
 
 def icon_sized_filename(icon_name: str, size: int) -> str:
