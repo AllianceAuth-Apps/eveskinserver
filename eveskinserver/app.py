@@ -38,11 +38,13 @@ type_to_icon_mapping = load_type_2_icon()
 
 @app.route("/", methods=["GET"])
 def index():
+    """Homepage"""
     return render_template("index.html")
 
 
 @app.route("/skin/<type_id>/icon", methods=["GET"])
 def api(type_id):
+    """Handles all API calls for this server"""
     try:
         size = int(request.args.get("size"))
     except TypeError:
@@ -74,16 +76,19 @@ def icon_sized_filename(icon_name: str, size: int) -> str:
     return f"{generated_icons_path}/{icon_name}_{size}.png"
 
 
-def generate_sized_icon(icon_name: str, size: int):
+def generate_sized_icon(icon_name: str, size: int) -> str:
     try:
-        img = Image.open(icon_base_filename(icon_name))
-    except IOError:
-        img = Image.open(icon_base_filename("default"))
-    else:
-        w_percent = size / float(img.size[0])
-        h_size = int((float(img.size[1]) * float(w_percent)))
-        img = img.resize((size, h_size), Image.ANTIALIAS)
-        img.save(icon_sized_filename(icon_name, size))
+        with Image.open(icon_base_filename(icon_name)) as img:
+            img.load()
+    except FileNotFoundError:
+        with Image.open(icon_base_filename("default")) as img:
+            img.load()
+
+    w_percent = size / float(img.size[0])
+    h_size = int((float(img.size[1]) * float(w_percent)))
+    img = img.resize((size, h_size), Image.ANTIALIAS)
+    outputfilename = icon_sized_filename(icon_name, size)
+    img.save(outputfilename)
 
 
 if __name__ == "__main__":
