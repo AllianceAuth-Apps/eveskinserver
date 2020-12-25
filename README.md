@@ -21,6 +21,59 @@ The server can be reached at [https://eveskinserver.kalkoken.net/](https://evesk
 ![Uptime Robot status](https://img.shields.io/uptimerobot/status/m786757006-b1d9c482172ede33260a4762)
 ![Uptime 7 day](https://img.shields.io/uptimerobot/ratio/7/m786757006-b1d9c482172ede33260a4762)
 
+## Self-hosting
+
+This section describes briefly how to setup eveskinserver on your own host.
+
+Create a service user and switch to that user:
+
+```bash
+adduser --disabled-login eveskinserver
+su eveskinserver
+```
+
+Setup a virtual environment for the server, activate it and update key packages:
+
+```bash
+cd /home/eveskinserver
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Update and install needed packages:
+
+```bash
+pip install -U pip
+pip install wheel
+pip install gunicorn
+```
+
+Install eveskinserver from the repo into the venv:
+
+```bash
+pip install git+https://gitlab.com/ErikKalkoken/eveskinserver.git
+```
+
+Copy the following files from `gunicorn` into your home folder:
+
+- `wsgi.py`
+- `supervisor.conf`
+
+Run gunicorn manually to check that your setup is working:
+
+```bash
+gunicorn --bind 0.0.0.0:8000 wsgi:app
+```
+
+Add eveskinserver to your supervisor configuration and restart supervisor to activate the change:
+
+```bash
+ln -s /home/eveskinserver/supervisor.conf /etc/supervisor/conf.d
+systemctl restart supervisor
+```
+
+Add a new configuration to your webserver that routes HTTP/HTTPS requests to gunicorn on port 8000 as proxy.
+
 ## Donation
 
 But if you'd like to say thanks, a ISK donation is always very welcome: **Erik Kalkoken**
