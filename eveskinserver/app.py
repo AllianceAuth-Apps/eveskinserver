@@ -1,5 +1,5 @@
 import csv
-import os
+from pathlib import Path
 import tempfile
 
 from flask import (
@@ -22,21 +22,24 @@ DEFAULT_SKIN_ICON = "102"  # SKIN icon to use if icon file is missing
 
 app = Flask(__name__)
 
-current_folder = os.path.dirname(os.path.realpath(__file__))
-generated_icons_folder = tempfile.mkdtemp()
+current_folder = Path(__file__).parent
+generated_icons_folder = Path(tempfile.mkdtemp())
 app.logger.info("Storing generated icons in: %s", generated_icons_folder)
+sde_folder = current_folder / "ccp_data" / "sde"
+icons_folder = current_folder / "ccp_data" / "icons"
+static_folder = current_folder / "static"
+templates_folder = current_folder / "templates"
 
 
 def load_type_2_icon() -> dict:
     """returns generated mapping from type ID to icon ID"""
-
     app.logger.info("Building type to icon ID mappings...")
-    with open(f"{current_folder}/ccp_data/sde/skinLicense.csv", mode="r") as csv_file:
+    with open(sde_folder / "skinLicense.csv", mode="r") as csv_file:
         skin_licenses = list(csv.reader(csv_file, delimiter=","))
 
     type_2_skin = {row[0]: row[2] for row in skin_licenses}
 
-    with open(f"{current_folder}/ccp_data/sde/skins.csv", mode="r") as csv_file:
+    with open(sde_folder / "skins.csv", mode="r") as csv_file:
         skins = list(csv.reader(csv_file, delimiter=","))
 
     skin_2_icon = {row[0]: row[2] for row in skins}
@@ -50,7 +53,7 @@ type_to_icon_mapping = load_type_2_icon()
 
 @app.route("/favicon.ico")
 def favicon():
-    return send_file(f"{current_folder}/static/icon.png", mimetype="image/png")
+    return send_file(static_folder / "icon.png", mimetype="image/png")
 
 
 @app.route("/", methods=["GET"])
@@ -88,21 +91,20 @@ def api(type_id):
 
     icon_name = str(icon_id)
     output_filepath = icon_sized_filepath(icon_name, size)
-    if not os.path.isfile(output_filepath):
+    if not output_filepath.exists():
         output_filepath = generate_sized_icon(icon_name, size)
 
     response = make_response(send_file(output_filepath, mimetype="image/png"))
-    _, filename = os.path.split(output_filepath)
-    response.headers["x-suggested-filename"] = filename
+    response.headers["x-suggested-filename"] = output_filepath.name
     return response
 
 
-def icon_base_filepath(icon_name: str) -> str:
-    return f"{current_folder}/ccp_data/icons/{icon_name}.png"
+def icon_base_filepath(icon_name: str) -> Path:
+    return icons_folder / f"{icon_name}.png"
 
 
-def icon_sized_filepath(icon_name: str, size: int) -> str:
-    return f"{generated_icons_folder}/{icon_name}_{size}.png"
+def icon_sized_filepath(icon_name: str, size: int) -> Path:
+    return generated_icons_folder / f"{icon_name}_{size}.png"
 
 
 def generate_sized_icon(icon_name: str, size: int) -> str:

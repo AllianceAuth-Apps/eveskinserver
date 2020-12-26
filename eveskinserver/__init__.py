@@ -1,2 +1,2 @@
-__version__ = "0.1.0a4"
+__version__ = "1.0.0"
 __title__ = "eveskinserver"
