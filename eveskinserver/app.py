@@ -1,5 +1,4 @@
 import csv
-import logging
 import os
 import tempfile
 
@@ -13,25 +12,19 @@ from flask import (
 )
 from PIL import Image
 
-logger = logging.getLogger(__name__)
-c_handler = logging.StreamHandler()
-c_handler.setLevel(logging.INFO)
-c_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-c_handler.setFormatter(c_format)
-logger.addHandler(c_handler)
+from eveskinserver import __version__, __title__
 
 app = Flask(__name__)
 
-
 current_path = os.path.dirname(os.path.realpath(__file__))
 generated_icons_path = tempfile.mkdtemp()
-logger.info("Storing generated icons in: %s", generated_icons_path)
+app.logger.info("Storing generated icons in: %s", generated_icons_path)
 
 
 def load_type_2_icon() -> dict:
     """returns generated mapping from type ID to icon ID"""
 
-    logger.info("Building type to icon ID mappings...")
+    app.logger.info("Building type to icon ID mappings...")
     with open(f"{current_path}/ccp_data/sde/skinLicense.csv", mode="r") as csv_file:
         skin_licenses = list(csv.reader(csv_file, delimiter=","))
 
@@ -57,7 +50,7 @@ def favicon():
 @app.route("/", methods=["GET"])
 def index():
     """Homepage"""
-    return render_template("index.html")
+    return render_template("index.html", app_name=__title__, version=__version__)
 
 
 @app.route("/skin/<type_id>/icon", methods=["GET"])
@@ -66,7 +59,7 @@ def api(type_id):
     try:
         size = int(request.args.get("size"))
     except TypeError:
-        logger.warning("Invalid size provided. Falling back to 64 as default.")
+        app.logger.warning("Invalid size provided. Falling back to 64 as default.")
         size = None
 
     if not size or size < 32 or size > 1024 or (size & (size - 1) != 0):
@@ -96,12 +89,12 @@ def icon_sized_filename(icon_name: str, size: int) -> str:
 
 
 def generate_sized_icon(icon_name: str, size: int) -> str:
-    logger.info("Generating icon for %s of size %s", icon_name, size)
+    app.logger.info("Generating icon for %s of size %s", icon_name, size)
     try:
         with Image.open(icon_base_filename(icon_name)) as img:
             img.load()
     except FileNotFoundError:
-        logger.warning(
+        app.logger.warning(
             "Could not find icon file for '%s'. Using default instead.", icon_name
         )
         with Image.open(icon_base_filename("default")) as img:
