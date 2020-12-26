@@ -15,6 +15,9 @@ from PIL import Image
 from eveskinserver import __version__, __title__
 
 
+DEFAULT_SIZE = 64
+MINIMUM_SIZE = 32
+MAXIMUM_SIZE = 1024
 DEFAULT_SKIN_ICON = "102"  # SKIN icon to use if icon file is missing
 
 app = Flask(__name__)
@@ -53,20 +56,31 @@ def favicon():
 @app.route("/", methods=["GET"])
 def index():
     """Homepage"""
-    return render_template("index.html", app_name=__title__, version=__version__)
+    return render_template(
+        "index.html", app_name=__title__, version=__version__, default_size=DEFAULT_SIZE
+    )
 
 
 @app.route("/skin/<type_id>/icon", methods=["GET"])
 def api(type_id):
     """Handles all API calls for this server"""
-    try:
-        size = int(request.args.get("size"))
-    except (ValueError, TypeError):
-        app.logger.warning("Invalid size provided. Falling back to 64 as default.")
-        size = None
+    size = request.args.get("size") if request.args.get("size") else None
+    if size:
+        try:
+            size = int(size)
+        except (ValueError, TypeError):
+            app.logger.warning(
+                f"Invalid size provided. Falling back to {DEFAULT_SIZE} as default."
+            )
+            size = None
 
-    if not size or size < 32 or size > 1024 or (size & (size - 1) != 0):
-        size = 64
+    if (
+        not size
+        or size < MINIMUM_SIZE
+        or size > MAXIMUM_SIZE
+        or (size & (size - 1) != 0)
+    ):
+        size = DEFAULT_SIZE
 
     icon_id = type_to_icon_mapping.get(type_id)
     if not icon_id:
