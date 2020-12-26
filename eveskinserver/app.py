@@ -18,7 +18,7 @@ from eveskinserver import __version__, __title__
 DEFAULT_SIZE = 64
 MINIMUM_SIZE = 32
 MAXIMUM_SIZE = 1024
-DEFAULT_SKIN_ICON = "102"  # SKIN icon to use if icon file is missing
+DEFAULT_ICON_NAME = "102"  # SKIN icon to use if icon file is missing
 
 app = Flask(__name__)
 
@@ -67,14 +67,11 @@ def index():
 @app.route("/skin/<type_id>/icon", methods=["GET"])
 def api(type_id):
     """Handles all API calls for this server"""
-    size = request.args.get("size") if request.args.get("size") else None
+    size = request.args.get("size") if request.args.get("size") else DEFAULT_SIZE
     if size:
         try:
             size = int(size)
         except (ValueError, TypeError):
-            app.logger.warning(
-                f"Invalid size provided. Falling back to {DEFAULT_SIZE} as default."
-            )
             size = None
 
     if (
@@ -83,7 +80,8 @@ def api(type_id):
         or size > MAXIMUM_SIZE
         or (size & (size - 1) != 0)
     ):
-        size = DEFAULT_SIZE
+        app.logger.warning(f"Invalid size '{size}' provided")
+        abort(400)
 
     icon_id = type_to_icon_mapping.get(type_id)
     if not icon_id:
@@ -117,7 +115,7 @@ def generate_sized_icon(icon_name: str, size: int) -> str:
         app.logger.warning(
             "Could not find icon file for '%s'. Using default instead.", icon_name
         )
-        icon_name = DEFAULT_SKIN_ICON
+        icon_name = DEFAULT_ICON_NAME
         with Image.open(icon_base_filepath(icon_name)) as img:
             img.load()
 
