@@ -1,6 +1,6 @@
 import unittest
 from unittest import mock
-from eveskinserver.app import app, generate_sized_icon
+from eveskinserver.app import app, generate_sized_icon, DEFAULT_SKIN_ICON
 
 
 class TestEveSkinServer(unittest.TestCase):
@@ -78,11 +78,20 @@ class TestEveSkinServer(unittest.TestCase):
         self.assertEqual(result.content_type, "image/png")
         self.assertEqual(result.headers.get("x-suggested-filename"), "244_1024.png")
 
-    def test_skin_size_invalid(self):
+    def test_skin_size_invalid_1(self):
         """when requesting a SKIN type with invalid size,
         then return correct SKIN icon with 64 size
         """
         result = self.app.get("/skin/47290/icon?size=11")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, "image/png")
+        self.assertEqual(result.headers.get("x-suggested-filename"), "244_64.png")
+
+    def test_skin_size_invalid_2(self):
+        """when requesting a SKIN type with invalid size,
+        then return correct SKIN icon with 64 size
+        """
+        result = self.app.get("/skin/47290/icon?size=abc")
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.content_type, "image/png")
         self.assertEqual(result.headers.get("x-suggested-filename"), "244_64.png")
@@ -103,3 +112,12 @@ class TestEveSkinServer(unittest.TestCase):
         result = self.app.get("/favicon.ico")
         self.assertEqual(result.status_code, 200)
         self.assertEqual(result.content_type, "image/png")
+
+    def test_skin_default(self):
+        """when icon file can not be found, then use default icon"""
+        result = self.app.get("/skin/53362/icon")
+        self.assertEqual(result.status_code, 200)
+        self.assertEqual(result.content_type, "image/png")
+        self.assertEqual(
+            result.headers.get("x-suggested-filename"), f"{DEFAULT_SKIN_ICON}_64.png"
+        )

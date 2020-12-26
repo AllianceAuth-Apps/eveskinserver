@@ -14,6 +14,9 @@ from PIL import Image
 
 from eveskinserver import __version__, __title__
 
+
+DEFAULT_SKIN_ICON = "102"  # SKIN icon to use if icon file is missing
+
 app = Flask(__name__)
 
 current_path = os.path.dirname(os.path.realpath(__file__))
@@ -58,7 +61,7 @@ def api(type_id):
     """Handles all API calls for this server"""
     try:
         size = int(request.args.get("size"))
-    except TypeError:
+    except (ValueError, TypeError):
         app.logger.warning("Invalid size provided. Falling back to 64 as default.")
         size = None
 
@@ -72,7 +75,7 @@ def api(type_id):
     icon_name = str(icon_id)
     output_filename = icon_sized_filename(icon_name, size)
     if not os.path.isfile(output_filename):
-        generate_sized_icon(icon_name, size)
+        output_filename = generate_sized_icon(icon_name, size)
 
     response = make_response(send_file(output_filename, mimetype="image/png"))
     _, filename = os.path.split(output_filename)
@@ -94,17 +97,19 @@ def generate_sized_icon(icon_name: str, size: int) -> str:
         with Image.open(icon_base_filename(icon_name)) as img:
             img.load()
     except FileNotFoundError:
+        icon_name = DEFAULT_SKIN_ICON
         app.logger.warning(
             "Could not find icon file for '%s'. Using default instead.", icon_name
         )
-        with Image.open(icon_base_filename("default")) as img:
+        with Image.open(icon_base_filename(icon_name)) as img:
             img.load()
 
     w_percent = size / float(img.size[0])
     h_size = int((float(img.size[1]) * float(w_percent)))
     img = img.resize((size, h_size), Image.ANTIALIAS)
-    outputfilename = icon_sized_filename(icon_name, size)
-    img.save(outputfilename)
+    output_filename = icon_sized_filename(icon_name, size)
+    img.save(output_filename)
+    return output_filename
 
 
 if __name__ == "__main__":

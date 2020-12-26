@@ -25,6 +25,8 @@ The server can be reached at [https://eveskinserver.kalkoken.net/](https://evesk
 
 This section describes briefly how to setup eveskinserver on your own host.
 
+>**Note**: eveskinserver is a normal Flask app and can be deployed in many different ways. We will focus on deployment with Gunicorn + Webserver (e.g. NGINX).
+
 Create a service user and switch to that user:
 
 ```bash
