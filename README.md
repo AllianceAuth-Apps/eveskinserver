@@ -13,18 +13,11 @@ Image server for providing SKIN icons for Eve Online types.
 
 This is a simple image server for providing SKIN icons for Eve Online types. This server aims to fill the gap of the official [CCP imagserver](https://imageserver.eveonline.com/), which does not provide images for SKIN icons. The API has been designed to match the API from CCP.
 
-## Server
-
-The server can be reached at [https://eveskinserver.kalkoken.net/](https://eveskinserver.kalkoken.net/) and is free for public consumption.
-
-![Uptime Robot status](https://img.shields.io/uptimerobot/status/m786757006-b1d9c482172ede33260a4762)
-![Uptime 7 day](https://img.shields.io/uptimerobot/ratio/7/m786757006-b1d9c482172ede33260a4762)
-
 ## Self-hosting
 
 This section describes briefly how to setup eveskinserver on your own host.
 
->**Note**: eveskinserver is a normal Flask app and can be deployed in many different ways. We will focus on deployment with Gunicorn + Webserver (e.g. NGINX).
+>**Note**: eveskinserver is a normal Flask app and can be deployed in many different ways. This guide describes how to deploy it with with Gunicorn + Webserver (e.g. NGINX) on Ubuntu.
 
 Create a service user and switch to that user:
 
