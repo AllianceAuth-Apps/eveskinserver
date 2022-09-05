@@ -36,5 +36,5 @@ setup(
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
     python_requires="~=3.7",
-    install_requires=["Flask>=1.1.0,<2", "Pillow>=7.00,<9"],
+    install_requires=["Flask>=1.1.0,<2", "Pillow>=7.00,<9", "markupsafe==2.0.1"],
 )
