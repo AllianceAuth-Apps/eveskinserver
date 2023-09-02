@@ -28,12 +28,12 @@ templates_folder = current_folder / "templates"
 def load_type_2_icon() -> dict:
     """returns generated mapping from type ID to icon ID"""
     app.logger.info("Building type to icon ID mappings...")
-    with open(sde_folder / "skinLicense.csv", mode="r", encoding="utf8") as csv_file:
+    with (sde_folder / "skinLicense.csv").open(mode="r", encoding="utf8") as csv_file:
         skin_licenses = list(csv.reader(csv_file, delimiter=","))
 
     type_2_skin = {row[0]: row[2] for row in skin_licenses}
 
-    with open(sde_folder / "skins.csv", mode="r", encoding="utf8") as csv_file:
+    with (sde_folder / "skins.csv").open(mode="r", encoding="utf8") as csv_file:
         skins = list(csv.reader(csv_file, delimiter=","))
 
     skin_2_icon = {row[0]: row[2] for row in skins}
