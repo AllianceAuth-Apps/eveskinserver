@@ -22,4 +22,4 @@ tests:
   stage: test
   image: python:3.11-bullseye
   script:
-  - tox
+  - tox -e py311
