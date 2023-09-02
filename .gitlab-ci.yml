@@ -8,7 +8,7 @@ before_script:
 
 pre-commit-check:
   stage: pre-commit
-  image: python:3.6-buster
+  image: python:3.11-bullseye
   variables:
     PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
   cache:
@@ -20,6 +20,6 @@ pre-commit-check:
 
 tests:
   stage: test
-  image: python:3.6-buster
+  image: python:3.11-bullseye
   script:
-  - tox
+  - tox -e py311

@@ -1,19 +1,13 @@
-import csv
-from pathlib import Path
-import tempfile
+"""Flask app for eveskinserver."""
 
-from flask import (
-    Flask,
-    send_file,
-    request,
-    render_template,
-    make_response,
-    abort,
-)
+import csv
+import tempfile
+from pathlib import Path
+
+from flask import Flask, abort, make_response, render_template, request, send_file
 from PIL import Image
 
-from eveskinserver import __version__, __title__
-
+from eveskinserver import __title__, __version__
 
 DEFAULT_SIZE = 64
 MINIMUM_SIZE = 32
@@ -34,12 +28,12 @@ templates_folder = current_folder / "templates"
 def load_type_2_icon() -> dict:
     """returns generated mapping from type ID to icon ID"""
     app.logger.info("Building type to icon ID mappings...")
-    with open(sde_folder / "skinLicense.csv", mode="r") as csv_file:
+    with (sde_folder / "skinLicense.csv").open(mode="r", encoding="utf8") as csv_file:
         skin_licenses = list(csv.reader(csv_file, delimiter=","))
 
     type_2_skin = {row[0]: row[2] for row in skin_licenses}
 
-    with open(sde_folder / "skins.csv", mode="r") as csv_file:
+    with (sde_folder / "skins.csv").open(mode="r", encoding="utf8") as csv_file:
         skins = list(csv.reader(csv_file, delimiter=","))
 
     skin_2_icon = {row[0]: row[2] for row in skins}

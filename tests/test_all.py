@@ -1,6 +1,7 @@
 import unittest
 from unittest import mock
-from eveskinserver.app import app, generate_sized_icon, DEFAULT_ICON_NAME
+
+from eveskinserver.app import DEFAULT_ICON_NAME, app, generate_sized_icon
 
 
 class TestEveSkinServer(unittest.TestCase):
