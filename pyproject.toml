@@ -7,7 +7,7 @@ name = "eveskinserver"
 dynamic = ["version", "description"]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">3.7"
+requires-python = ">=3.8"
 authors = [{ name = "Erik Kalkoken", email = "kaloken87@gmail.com" }]
 classifiers = [
     "Environment :: Web Environment",
@@ -16,11 +16,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
-dependencies = ["Flask>=1.1.0,<2", "markupsafe==2.0.1", "Pillow>=7.00,<9"]
+dependencies = ["Flask>=1.1.0,<2", "markupsafe==2.0.1", "Pillow>=7,<8"]
 
 [project.urls]
 Homepage = "https://gitlab.com/ErikKalkoken/eveskinserver"
