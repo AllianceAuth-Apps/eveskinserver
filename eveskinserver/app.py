@@ -1,19 +1,11 @@
 import csv
-from pathlib import Path
 import tempfile
+from pathlib import Path
 
-from flask import (
-    Flask,
-    send_file,
-    request,
-    render_template,
-    make_response,
-    abort,
-)
+from flask import Flask, abort, make_response, render_template, request, send_file
 from PIL import Image
 
-from eveskinserver import __version__, __title__
-
+from eveskinserver import __title__, __version__
 
 DEFAULT_SIZE = 64
 MINIMUM_SIZE = 32
