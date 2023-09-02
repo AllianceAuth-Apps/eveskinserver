@@ -1,7 +1,0 @@
-include LICENSE
-include README.md
-recursive-include eveskinserver *.py
-recursive-include eveskinserver/static *
-recursive-include eveskinserver/templates *
-recursive-include eveskinserver/ccp_data *
-recursive-exclude tests *.*
