@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Change
 
 - Migrate build process to PEP 621
+- Upgrade dependencies
 
 ## [1.1.0] - 2020-12-26
 
