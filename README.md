@@ -2,8 +2,8 @@
 
 An image server designed to serve SKIN icons for various EVE Online types.
 
-[![release](https://img.shields.io/badge/release-1.0.0-orange)](https://pypi.org/project/eveskinserver/)
-[![Python](https://img.shields.io/badge/python-3.7-blue)](https://pypi.org/project/eveskinserver/)
+[![release](https://img.shields.io/badge/release-2.0.0-orange)](https://pypi.org/project/eveskinserver/)
+[![Python](https://img.shields.io/badge/python-3.10-blue)](https://pypi.org/project/eveskinserver/)
 [![CI/CD](https://github.com/AllianceAuth-Apps/eveskinserver/actions/workflows/ci-cd.yaml/badge.svg)](https://github.com/AllianceAuth-Apps/eveskinserver/actions/workflows/ci-cd.yaml)
 [![license](https://img.shields.io/badge/license-MIT-green)](https://github.com/AllianceAuth-Apps/eveskinserver#MIT-1-ov-file)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
