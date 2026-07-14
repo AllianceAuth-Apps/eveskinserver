@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] - yyyy-mm-dd
 
+## [2.0.0] - 2026-07-14
+
+## Change
+
+- BREAKING CHANGE: Removed support for Python 3.8, 3.9
+- Migrated the repository to GitHub: [eveskinserver](https://github.com/AllianceAuth-Apps/eveskinserver)
+- Updated dependencies
+
 ## [1.2.0] - 2023-09-02
 
 ### Change

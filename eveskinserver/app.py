@@ -47,6 +47,7 @@ type_to_icon_mapping = load_type_2_icon()
 
 @app.route("/favicon.ico")
 def favicon():
+    """Return favicon icon."""
     return send_file(static_folder / "icon.png", mimetype="image/png")
 
 
@@ -60,7 +61,7 @@ def index():
 
 @app.route("/skin/<type_id>/icon", methods=["GET"])
 def api(type_id):
-    """Handles all API calls for this server"""
+    """Handle all API calls for this server."""
     size = request.args.get("size") if request.args.get("size") else DEFAULT_SIZE
     if size:
         try:
@@ -74,7 +75,7 @@ def api(type_id):
         or size > MAXIMUM_SIZE
         or (size & (size - 1) != 0)
     ):
-        app.logger.warning(f"Invalid size '{size}' provided")
+        app.logger.warning("Invalid size '%d' provided", size)
         abort(400)
 
     icon_id = type_to_icon_mapping.get(type_id)
@@ -82,7 +83,7 @@ def api(type_id):
         abort(404)
 
     icon_name = str(icon_id)
-    output_filepath = icon_sized_filepath(icon_name, size)
+    output_filepath = _icon_sized_filepath(icon_name, size)
     if not output_filepath.exists():
         output_filepath = generate_sized_icon(icon_name, size)
 
@@ -91,32 +92,32 @@ def api(type_id):
     return response
 
 
-def icon_base_filepath(icon_name: str) -> Path:
+def _icon_base_filepath(icon_name: str) -> Path:
     return icons_folder / f"{icon_name}.png"
 
 
-def icon_sized_filepath(icon_name: str, size: int) -> Path:
+def _icon_sized_filepath(icon_name: str, size: int) -> Path:
     return generated_icons_folder / f"{icon_name}_{size}.png"
 
 
-def generate_sized_icon(icon_name: str, size: int) -> str:
-    """generated a sized icon and stores it. Returns the full path to that file"""
+def generate_sized_icon(icon_name: str, size: int) -> Path:
+    """Generate a sized icon, store it and returns the full path to that file."""
     app.logger.info("Generating icon for %s of size %s", icon_name, size)
     try:
-        with Image.open(icon_base_filepath(icon_name)) as img:
+        with Image.open(_icon_base_filepath(icon_name)) as img:
             img.load()
     except FileNotFoundError:
         app.logger.warning(
             "Could not find icon file for '%s'. Using default instead.", icon_name
         )
         icon_name = DEFAULT_ICON_NAME
-        with Image.open(icon_base_filepath(icon_name)) as img:
+        with Image.open(_icon_base_filepath(icon_name)) as img:
             img.load()
 
     w_percent = size / float(img.size[0])
     h_size = int((float(img.size[1]) * float(w_percent)))
-    img = img.resize((size, h_size), Image.ANTIALIAS)
-    output_filepath = icon_sized_filepath(icon_name, size)
+    img = img.resize((size, h_size))
+    output_filepath = _icon_sized_filepath(icon_name, size)
     img.save(output_filepath)
     return output_filepath
 
