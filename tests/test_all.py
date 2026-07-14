@@ -5,13 +5,9 @@ from eveskinserver.app import DEFAULT_ICON_NAME, app, generate_sized_icon
 
 
 class TestEveSkinServer(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        pass
-
     def setUp(self):
         self.app = app.test_client()
-        self.app.testing = True
+        self.app.testing = True  # type: ignore
 
     def test_home_status_code(self):
         result = self.app.get("/")

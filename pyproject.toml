@@ -7,23 +7,25 @@ name = "eveskinserver"
 dynamic = ["version", "description"]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 authors = [{ name = "Erik Kalkoken", email = "kaloken87@gmail.com" }]
 classifiers = [
     "Environment :: Web Environment",
     "Framework :: Flask",
     "Intended Audience :: Developer",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Topic :: Internet :: WWW/HTTP",
     "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 ]
-dependencies = ["Flask>=2", "Pillow>=9,<10"]
+dependencies = ["Flask>=3,<4", "Pillow>=12,<13"]
+
+[project.optional-dependencies]
+test = ["coverage"]
 
 [project.urls]
-Homepage = "https://gitlab.com/ErikKalkoken/eveskinserver"
+Homepage = "https://github.com/AllianceAuth-Apps/eveskinserver"
 
 [tool.flit.module]
 name = "eveskinserver"

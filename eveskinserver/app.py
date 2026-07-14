@@ -60,7 +60,7 @@ def index():
 
 @app.route("/skin/<type_id>/icon", methods=["GET"])
 def api(type_id):
-    """Handles all API calls for this server"""
+    """Handle all API calls for this server."""
     size = request.args.get("size") if request.args.get("size") else DEFAULT_SIZE
     if size:
         try:
@@ -99,8 +99,8 @@ def icon_sized_filepath(icon_name: str, size: int) -> Path:
     return generated_icons_folder / f"{icon_name}_{size}.png"
 
 
-def generate_sized_icon(icon_name: str, size: int) -> str:
-    """generated a sized icon and stores it. Returns the full path to that file"""
+def generate_sized_icon(icon_name: str, size: int) -> Path:
+    """Generate a sized icon, store it and returns the full path to that file."""
     app.logger.info("Generating icon for %s of size %s", icon_name, size)
     try:
         with Image.open(icon_base_filepath(icon_name)) as img:
@@ -115,7 +115,7 @@ def generate_sized_icon(icon_name: str, size: int) -> str:
 
     w_percent = size / float(img.size[0])
     h_size = int((float(img.size[1]) * float(w_percent)))
-    img = img.resize((size, h_size), Image.ANTIALIAS)
+    img = img.resize((size, h_size))
     output_filepath = icon_sized_filepath(icon_name, size)
     img.save(output_filepath)
     return output_filepath
